@@ -22,6 +22,10 @@ public class Boite implements Comparable {
         return poids;
     }
 
+    public float getValeur(){
+        return valeur;
+    }
+
 
 
     @Override

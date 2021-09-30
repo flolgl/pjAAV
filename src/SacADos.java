@@ -36,13 +36,21 @@ public class SacADos {
         return poids;
     }
 
+    /**
+     * Première méthode de traitement
+     */
     private void traiterObjets(){
         Collections.sort(tabBoites);
         for(Boite b : tabBoites)
             if(this.getPoidsTotal() + b.getPoids() <= this.poidsMaximal)
                 sac.add(b);
     }
-    
+
+    /**
+     * Récupère le fichier d'input
+     * @param chemin le chemin vers le fichier
+     * @return le fichier transformé en lecteur de buffer
+     */
     private BufferedReader getFile(String chemin){
         FileReader file = null;
         BufferedReader br = null;
@@ -56,6 +64,12 @@ public class SacADos {
         return br;
     }
 
+
+    /**
+     * Récupère l'input dans une string
+     * @param br le lecteur du buffer
+     * @throws IOException s'il y a un problème dans la lecture
+     */
     private void getInput(BufferedReader br) throws IOException {
         String s = br.readLine();
         while (s != null && this.isFormatOk(s)){
@@ -65,17 +79,44 @@ public class SacADos {
         }
     }
 
-    private boolean isFormatOk(String input){
-        /*
-        int nbPointVirg = 0;
+    private void traiterObjetsDyna(){
+        float[][] tab = new float[tabBoites.size()][(int)(poidsMaximal+1)];
+        for(int j = 0; j<poidsMaximal; j++){
+            if(tabBoites.get(0).getPoids()>j)
+                tab[0][j] = 0;
+            else
+                tab[0][j] = tabBoites.get(0).getValeur();
+        }
 
-        for(char c : input.toCharArray())
-            if (c == ';')
-                nbPointVirg++;
-         */
+        for(int i = 1; i<tab.length; i++){
+            for(int j = 0; j<poidsMaximal; j++){
+                if(tabBoites.get(i).getPoids()>j)
+                    tab[i][j] = tab[i-1][j];
+                else
+                    tab[i][j] = maximum(tab[i-1][j], tab[i-1][j-(int)tabBoites.get(i).getPoids()] + tabBoites.get(i).getValeur());
+
+            }
+        }
+
+    }
+
+    private float maximum(float premierChoix, float secondChoix){
+        return premierChoix>secondChoix?premierChoix:secondChoix;
+    }
+
+    /**
+     * Vérification du format de la ligne d'input
+     * @param input la ligne d'input
+     * @return true si la ligne d'input respecte le format nom ; poids ; valeur
+     */
+    private boolean isFormatOk(String input){
         return Pattern.matches("^[A-Za-z0-9\\s]+; [0-9]+.[0-9]+ ; [0-9]+.[0-9]+", input);
     }
 
+    /**
+     * Ajoute l'input au tableau tabBoites
+     * @param input la string venant de l'input
+     */
     private void addToSac(String input){
         String[] sTab = input.split(";");
         tabBoites.add(new Boite(Float.parseFloat(sTab[2]), Float.parseFloat(sTab[1]), sTab[0]));
