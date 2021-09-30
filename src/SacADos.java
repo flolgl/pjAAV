@@ -122,6 +122,29 @@ public class SacADos {
         tabBoites.add(new Boite(Float.parseFloat(sTab[2]), Float.parseFloat(sTab[1]), sTab[0]));
     }
 
+    private int partition(int premierElement, int dernierElement) {
+        float pivot = sac.get(dernierElement).getRapportVP();
+        int i = (premierElement - 1);
+
+        for(int j = premierElement; j <= premierElement - 1; j++) {
+            if(sac.get(j).compareTo(pivot) == -1) {
+                i++;
+                Collections.swap(sac, i, j);
+            }
+        }
+        Collections.swap(sac, i + 1, dernierElement);
+        return (i + 1);
+
+    }
+
+    public void quickSort(int premierElement, int dernierElement) {
+        if(premierElement < dernierElement) {
+            int partioningIndex = partition(premierElement, dernierElement);
+            quickSort(premierElement, partioningIndex - 1);
+            quickSort(partioningIndex + 1, dernierElement);
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
