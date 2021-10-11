@@ -25,7 +25,7 @@ public class SacADos {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        quickSort(0, sac.size()-1);
         System.out.println(sac);
     }
 
@@ -122,26 +122,25 @@ public class SacADos {
         tabBoites.add(new Boite(Float.parseFloat(sTab[2]), Float.parseFloat(sTab[1]), sTab[0]));
     }
 
-    private int partition(int premierElement, int dernierElement) {
-        float pivot = sac.get(dernierElement).getRapportVP();
-        int i = (premierElement - 1);
-
-        for(int j = premierElement; j <= premierElement - 1; j++) {
-            if(sac.get(j).compareTo(pivot) == -1) {
+    private int partition(int indexPremier, int indexDernier) {
+        float pivot = sac.get(indexDernier).getRapportVP();
+        int i = (indexPremier - 1);
+        for(int j = indexPremier; j <= indexDernier - 1; j++) {
+            if(sac.get(j).getRapportVP() > pivot) {
                 i++;
                 Collections.swap(sac, i, j);
             }
         }
-        Collections.swap(sac, i + 1, dernierElement);
+        Collections.swap(sac, i + 1, indexDernier);
         return (i + 1);
 
     }
 
-    public void quickSort(int premierElement, int dernierElement) {
-        if(premierElement < dernierElement) {
-            int partioningIndex = partition(premierElement, dernierElement);
-            quickSort(premierElement, partioningIndex - 1);
-            quickSort(partioningIndex + 1, dernierElement);
+    public void quickSort(int indexPremier, int indexDernier) {
+        if(indexPremier < indexDernier) {
+            int partitioningIndex = partition(indexPremier, indexDernier);
+            quickSort(indexPremier, partitioningIndex - 1);
+            quickSort(partitioningIndex + 1, indexDernier);
         }
     }
 
@@ -162,7 +161,10 @@ public class SacADos {
     }
 
     public static void main(String[] args) {
-        SacADos sac = new SacADos("C:\\Users\\Flori\\Desktop\\pjAAV\\input.txt", 30.0f);
+        SacADos sac = new SacADos("C:\\Users\\ayoub\\OneDrive\\Documents\\GitHub\\pjAAV\\input.txt", 30.0f);
         System.out.println(sac.toString());
     }
+
+    //bug : chips pas pris récupérer dans input.txt
+    // j'ai mis le qsort dans le constructeur avant de print, tu peux le déplacer si tu veux le mettre autre part
 }
