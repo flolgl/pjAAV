@@ -25,7 +25,6 @@ public class SacADos {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        quickSort(0, sac.size()-1);
         System.out.println(sac);
     }
 
@@ -40,7 +39,7 @@ public class SacADos {
      * Première méthode de traitement
      */
     private void traiterObjets(){
-        Collections.sort(tabBoites);
+        this.quickSort(0, tabBoites.size()-1);
         for(Boite b : tabBoites)
             if(this.getPoidsTotal() + b.getPoids() <= this.poidsMaximal)
                 sac.add(b);
@@ -73,6 +72,7 @@ public class SacADos {
     private void getInput(BufferedReader br) throws IOException {
         String s = br.readLine();
         while (s != null && this.isFormatOk(s)){
+            System.out.println(s);
             //System.out.println(s);
             this.addToSac(s);
             s = br.readLine();
@@ -110,7 +110,7 @@ public class SacADos {
      * @return true si la ligne d'input respecte le format nom ; poids ; valeur
      */
     private boolean isFormatOk(String input){
-        return Pattern.matches("^[A-Za-z0-9\\s]+; [0-9]+.[0-9]+ ; [0-9]+.[0-9]+", input);
+        return Pattern.matches("^\\s*[A-Za-z0-9\\s]+; [0-9]+.[0-9]+ ; [0-9]+.[0-9]+\\s*", input);
     }
 
     /**
@@ -123,15 +123,15 @@ public class SacADos {
     }
 
     private int partition(int indexPremier, int indexDernier) {
-        float pivot = sac.get(indexDernier).getRapportVP();
+        float pivot = tabBoites.get(indexDernier).getRapportVP();
         int i = (indexPremier - 1);
         for(int j = indexPremier; j <= indexDernier - 1; j++) {
-            if(sac.get(j).getRapportVP() > pivot) {
+            if(tabBoites.get(j).getRapportVP() > pivot) {
                 i++;
-                Collections.swap(sac, i, j);
+                Collections.swap(tabBoites, i, j);
             }
         }
-        Collections.swap(sac, i + 1, indexDernier);
+        Collections.swap(tabBoites, i + 1, indexDernier);
         return (i + 1);
 
     }
