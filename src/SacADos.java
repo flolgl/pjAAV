@@ -5,12 +5,12 @@ import java.util.regex.Pattern;
 
 public class SacADos {
 
-    private ArrayList<Boite> tabBoites;
+    private ArrayList<Objet> tabObjets;
     private float poidsMaximal;
-    private ArrayList<Boite> sac = new ArrayList<>();
+    private ArrayList<Objet> sac = new ArrayList<>();
 
     public SacADos(){
-        tabBoites = new ArrayList<>();
+        tabObjets = new ArrayList<>();
         poidsMaximal = -1;
     }
 
@@ -22,23 +22,27 @@ public class SacADos {
         try {
             this.getInput(br);
             //this.traiterObjets();
-            this.traiterObjetsDynamique();
+            //this.traiterObjetsDynamique();
         } catch (IOException e) {
             e.printStackTrace();
         }
         //System.out.println(sac);
     }
 
+    public ArrayList<Objet> getTabObjets() {
+        return tabObjets;
+    }
+
     private float getPoidsTotal(){
         float poids = 0;
-        for(Boite b : sac)
+        for(Objet b : sac)
             poids+=b.getPoids();
         return poids;
     }
     
     private float getValeurTotale(){
         float valeur = 0;
-        for(Boite b : sac)
+        for(Objet b : sac)
             valeur+=b.getValeur();
         return valeur;
     }
@@ -47,8 +51,8 @@ public class SacADos {
      * Première méthode de traitement
      */
     private void traiterObjets(){
-        this.quickSort(0, tabBoites.size()-1);
-        for(Boite b : tabBoites)
+        this.quickSort(0, tabObjets.size()-1);
+        for(Objet b : tabObjets)
             if(this.getPoidsTotal() + b.getPoids() <= this.poidsMaximal)
                 sac.add(b);
     }
@@ -81,7 +85,7 @@ public class SacADos {
         String s = br.readLine();
         while (s != null && this.isFormatOk(s)){
             //System.out.println(s);
-            this.addToSac(s);
+            this.addToTab(s);
             s = br.readLine();
         }
     }
@@ -95,23 +99,23 @@ public class SacADos {
 
         int poidsMax = (int)(poidsMaximal*10);
 
-        float[][] matrice = new float[tabBoites.size()][poidsMax+1];
+        float[][] matrice = new float[tabObjets.size()][poidsMax+1];
 
         // Ajout dans première ligne
         for(int j= 0; j<poidsMax+1; j++){
-            if((int)(tabBoites.get(0).getPoids()*10) > j)
+            if((int)(tabObjets.get(0).getPoids()*10) > j)
                 matrice[0][j] = 0;
             else
-                matrice[0][j] = tabBoites.get(0).getValeur();
+                matrice[0][j] = tabObjets.get(0).getValeur();
         }
 
         // Ajout dans les autres lignes
-        for(int i= 1; i<tabBoites.size(); i++){
+        for(int i = 1; i< tabObjets.size(); i++){
             for(int j= 0; j<poidsMax+1; j++){
-                if((int)(tabBoites.get(i).getPoids()*10) > j)
+                if((int)(tabObjets.get(i).getPoids()*10) > j)
                     matrice[i][j] = matrice[i-1][j];
                 else
-                    matrice[i][j] = Math.max(matrice[i-1][j], matrice[i-1][j-(int)(tabBoites.get(i).getPoids()*10)] + tabBoites.get(i).getValeur());
+                    matrice[i][j] = Math.max(matrice[i-1][j], matrice[i-1][j-(int)(tabObjets.get(i).getPoids()*10)] + tabObjets.get(i).getValeur());
             }
         }
 
@@ -140,15 +144,15 @@ public class SacADos {
         int poidsMax = (int)(poidsMaximal*10);
         float[][] matrice = this.fillMatrice();
 
-        int i = tabBoites.size() - 1;
+        int i = tabObjets.size() - 1;
         int j = this.benefOptimal(i, poidsMax, matrice);
 
         while(j > 0) {
             while (i > 0 && matrice[i][j] == matrice[i - 1][j])
                 i--;
-            j = j - (int)(tabBoites.get(i).getPoids() * 10);
+            j = j - (int)(tabObjets.get(i).getPoids() * 10);
             if (j >= 0)
-                    sac.add(tabBoites.get(i));
+                    sac.add(tabObjets.get(i));
             i--;
         }
 
@@ -168,9 +172,9 @@ public class SacADos {
      * Ajoute l'input au tableau tabBoites
      * @param input la string venant de l'input
      */
-    private void addToSac(String input){
+    private void addToTab(String input){
         String[] sTab = input.split(";");
-        tabBoites.add(new Boite(Float.parseFloat(sTab[2]), Float.parseFloat(sTab[1]), sTab[0]));
+        tabObjets.add(new Objet(Float.parseFloat(sTab[2]), Float.parseFloat(sTab[1]), sTab[0]));
     }
 
     /**
@@ -180,15 +184,15 @@ public class SacADos {
      * @return
      */
     private int partition(int indexPremier, int indexDernier) {
-        float pivot = tabBoites.get(indexDernier).getRapportVP();
+        float pivot = tabObjets.get(indexDernier).getRapportVP();
         int i = (indexPremier - 1);
         for(int j = indexPremier; j <= indexDernier - 1; j++) {
-            if(tabBoites.get(j).getRapportVP() > pivot) {
+            if(tabObjets.get(j).getRapportVP() > pivot) {
                 i++;
-                Collections.swap(tabBoites, i, j);
+                Collections.swap(tabObjets, i, j);
             }
         }
-        Collections.swap(tabBoites, i + 1, indexDernier);
+        Collections.swap(tabObjets, i + 1, indexDernier);
         return (i + 1);
 
     }
@@ -210,11 +214,11 @@ public class SacADos {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Tab des boites: \n");
-        for(Boite b : tabBoites)
+        for(Objet b : tabObjets)
             sb.append(b.getNom()).append("\n");
 
         sb.append("\n\n").append("Sac à dos: \n");
-        for(Boite b : sac)
+        for(Objet b : sac)
             sb.append(b.getNom()).append("\n");
 
         sb.append("Poids total: ").append(this.getPoidsTotal()).append("\n");
@@ -224,7 +228,7 @@ public class SacADos {
     }
 
     public static void main(String[] args) {
-        SacADos sac = new SacADos("C:\\Users\\ayoub\\OneDrive\\Documents\\GitHub\\pjAAV\\input.txt", 30.0f);
+        SacADos sac = new SacADos("C:\\Users\\User\\Desktop\\td-tp\\pjAAV\\input.txt", 3.0f);
         System.out.println(sac.toString());
     }
 

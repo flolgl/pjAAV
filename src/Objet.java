@@ -1,9 +1,9 @@
-public class Boite implements Comparable {
+public class Objet implements Comparable {
     private String nom;
     private float valeur, poids;
     private static int id = 0;
 
-    public Boite(float valeur, float poids, String nom){
+    public Objet(float valeur, float poids, String nom){
         this.valeur = valeur;
         this.poids = poids;
         this.nom = nom;
@@ -39,7 +39,7 @@ public class Boite implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-        Boite b = (Boite)o;
+        Objet b = (Objet)o;
         float compa = this.getRapportVP() - b.getRapportVP();
         if (compa == 0.0f)
             return 0;
