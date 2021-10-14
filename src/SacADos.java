@@ -21,11 +21,12 @@ public class SacADos {
         BufferedReader br = getFile(chemin);
         try {
             this.getInput(br);
-            this.traiterObjets();
+            //this.traiterObjets();
+            this.traiterObjetsDynamique();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(sac);
+        //System.out.println(sac);
     }
 
     private float getPoidsTotal(){
@@ -33,6 +34,13 @@ public class SacADos {
         for(Boite b : sac)
             poids+=b.getPoids();
         return poids;
+    }
+    
+    private float getValeurTotale(){
+        float valeur = 0;
+        for(Boite b : sac)
+            valeur+=b.getValeur();
+        return valeur;
     }
 
     /**
@@ -72,37 +80,80 @@ public class SacADos {
     private void getInput(BufferedReader br) throws IOException {
         String s = br.readLine();
         while (s != null && this.isFormatOk(s)){
-            System.out.println(s);
             //System.out.println(s);
             this.addToSac(s);
             s = br.readLine();
         }
     }
 
-    private void traiterObjetsDyna(){
-        float[][] tab = new float[tabBoites.size()][(int)(poidsMaximal+1)];
-        for(int j = 0; j<poidsMaximal; j++){
-            if(tabBoites.get(0).getPoids()>j)
-                tab[0][j] = 0;
+
+    /**
+     * Remplissage de la matrice pour la méthode dynamique
+     * @return La matrice remplie
+     */
+    private float[][] fillMatrice(){
+
+        int poidsMax = (int)(poidsMaximal*10);
+
+        float[][] matrice = new float[tabBoites.size()][poidsMax+1];
+
+        // Ajout dans première ligne
+        for(int j= 0; j<poidsMax+1; j++){
+            if((int)(tabBoites.get(0).getPoids()*10) > j)
+                matrice[0][j] = 0;
             else
-                tab[0][j] = tabBoites.get(0).getValeur();
+                matrice[0][j] = tabBoites.get(0).getValeur();
         }
 
-        for(int i = 1; i<tab.length; i++){
-            for(int j = 0; j<poidsMaximal; j++){
-                if(tabBoites.get(i).getPoids()>j)
-                    tab[i][j] = tab[i-1][j];
+        // Ajout dans les autres lignes
+        for(int i= 1; i<tabBoites.size(); i++){
+            for(int j= 0; j<poidsMax+1; j++){
+                if((int)(tabBoites.get(i).getPoids()*10) > j)
+                    matrice[i][j] = matrice[i-1][j];
                 else
-                    tab[i][j] = maximum(tab[i-1][j], tab[i-1][j-(int)tabBoites.get(i).getPoids()] + tabBoites.get(i).getValeur());
-
+                    matrice[i][j] = Math.max(matrice[i-1][j], matrice[i-1][j-(int)(tabBoites.get(i).getPoids()*10)] + tabBoites.get(i).getValeur());
             }
         }
 
+        return matrice;
+
     }
 
-    private float maximum(float premierChoix, float secondChoix){
-        return premierChoix>secondChoix?premierChoix:secondChoix;
+    /**
+     * Permet de récupérer le poids minimum pour un benef max
+     * @param i dernier indice du tab des objets (ligne avec les plus gros benefs)
+     * @param j l'indice représentant les poids
+     * @param matrice la matrice déjà remplie
+     * @return le poids minimum pour une valeur max
+     */
+    private int benefOptimal(int i, int j, float[][] matrice){
+        while(matrice[i][j] == matrice[i][j-1])
+            j--;
+        return j;
     }
+
+    /**
+     * Méthode permettant de résoudre le problème du sac de façon dynamique
+     */
+    private void traiterObjetsDynamique() {
+
+        int poidsMax = (int)(poidsMaximal*10);
+        float[][] matrice = this.fillMatrice();
+
+        int i = tabBoites.size() - 1;
+        int j = this.benefOptimal(i, poidsMax, matrice);
+
+        while(j > 0) {
+            while (i > 0 && matrice[i][j] == matrice[i - 1][j])
+                i--;
+            j = j - (int)(tabBoites.get(i).getPoids() * 10);
+            if (j >= 0)
+                    sac.add(tabBoites.get(i));
+            i--;
+        }
+
+    }
+
 
     /**
      * Vérification du format de la ligne d'input
@@ -122,6 +173,12 @@ public class SacADos {
         tabBoites.add(new Boite(Float.parseFloat(sTab[2]), Float.parseFloat(sTab[1]), sTab[0]));
     }
 
+    /**
+     *
+     * @param indexPremier
+     * @param indexDernier
+     * @return
+     */
     private int partition(int indexPremier, int indexDernier) {
         float pivot = tabBoites.get(indexDernier).getRapportVP();
         int i = (indexPremier - 1);
@@ -136,6 +193,11 @@ public class SacADos {
 
     }
 
+    /**
+     * Tri rapide
+     * @param indexPremier
+     * @param indexDernier
+     */
     public void quickSort(int indexPremier, int indexDernier) {
         if(indexPremier < indexDernier) {
             int partitioningIndex = partition(indexPremier, indexDernier);
@@ -155,7 +217,8 @@ public class SacADos {
         for(Boite b : sac)
             sb.append(b.getNom()).append("\n");
 
-        sb.append("Poids total: ").append(this.getPoidsTotal());
+        sb.append("Poids total: ").append(this.getPoidsTotal()).append("\n");
+        sb.append("Valeur totale: ").append(this.getValeurTotale());
 
         return sb.toString();
     }
@@ -165,6 +228,5 @@ public class SacADos {
         System.out.println(sac.toString());
     }
 
-    //bug : chips pas pris récupérer dans input.txt
-    // j'ai mis le qsort dans le constructeur avant de print, tu peux le déplacer si tu veux le mettre autre part
+
 }
