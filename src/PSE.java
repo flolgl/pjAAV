@@ -8,6 +8,36 @@ import java.util.ArrayList;
 public class PSE {
     private PSE haut, bas;
     private ArrayList<Objet> objets;
+    private static float borneInf;
+    public static float poidsMaximal;
+
+    public static void setBornes(float borneInf){
+        PSE.borneInf = borneInf;
+    }
+
+
+    private float getBorneSup(ArrayList<Objet> objets, int indice){
+        float poids = getPoidsTotal();
+        for (int i = indice; i<objets.size(); i++)
+            poids += objets.get(i).getPoids();
+        return poids;
+    }
+
+
+    private float getPoidsTotal(){
+        float poids = 0;
+        for(Objet obj : objets)
+            poids+= obj.getPoids();
+        return poids;
+    }
+
+    private float getValeurTotale(){
+        float poids = 0;
+        for(Objet obj : objets)
+            poids+= obj.getValeur();
+        return poids;
+    }
+
 
     public PSE() {
         this.haut = null;
@@ -15,21 +45,16 @@ public class PSE {
         this.objets = new ArrayList<>();
     }
 
-    public PSE(Objet objet) {
-        this();
-        this.objets.add(objet);
-    }
 
-    public PSE(ArrayList<Objet> objets) {
+    public PSE(ArrayList<Objet> objets, Objet newObjet) {
         this();
+        //System.out.println(objets.toString() + newObjet.toString());
+
         this.objets.addAll(objets);
+        if (newObjet != null)
+            this.objets.add(newObjet);
     }
 
-    public PSE(Objet objets, PSE haut, PSE bas) {
-        this(objets);
-        this.haut = haut;
-        this.bas = bas;
-    }
 
     @Override
     public String toString() {
@@ -39,43 +64,93 @@ public class PSE {
     public String toString(String s) {
         if (haut !=null) {
             if (bas !=null)
-                return(s+ objets.toString() +"\n"+ haut.toString(s+"\t")+ bas.toString(s+"\t"));
+                return(s+ "Objets" + objets.toString() +"\n"+ "branche haute" + haut.toString(s+"\t")+ "branche basse"+ bas.toString(s+"\t"));
             else
-                return(s+ objets.toString() +"\n"+ haut.toString(s+"\t")+"\n");
+                return(s+ "Objets" + objets.toString() +"\n"+ "branche haute" +  haut.toString(s+"\t")+"\n");
         }
         else {
             if (bas != null)
-                return (s + objets.toString() + "\n\n" + bas.toString(s + "\t"));
+                return (s + "Objets" + objets.toString() + "\n\n" + "branche basse" + bas.toString(s + "\t"));
             else
-                return (s + objets.toString() + "\n");
+                return (s + "Objets" + objets.toString() + "\n");
         }
     }
 
     public static PSE fabriquePSE(PSE pse, ArrayList<Objet> tabObjets, int i){
-        if (i == tabObjets.size())
+        //System.out.println(tabObjets);
+
+
+        if (i == tabObjets.size() ||
+                pse.getPoidsTotal()+tabObjets.get(i).getPoids()> poidsMaximal ||
+                pse.getBorneSup(tabObjets, i)<PSE.borneInf)
             return pse;
+        //System.out.println(i);
+        //System.out.println(tabObjets.get(i));
 
         // TODO: Débug ligne 61
-        pse.bas = new PSE(pse.objets);
-        pse.haut = new PSE(pse.objets);
-        System.out.println(tabObjets.get(i));
-        Objet obj = tabObjets.get(i);
-        pse.haut.objets.add(obj);
+        pse.haut = new PSE(pse.objets, tabObjets.get(i));
+        pse.bas = new PSE(pse.objets, null);
         i++;
-        fabriquePSE(pse.bas, pse.objets, i); // faire debug
-        fabriquePSE(pse.haut, pse.haut.objets, i);
+
+        System.out.println("born inf = " + borneInf);
+        borneInf = Math.max(pse.haut.getPoidsTotal(), borneInf);
+
+        fabriquePSE(pse.haut, tabObjets, i);
+        fabriquePSE(pse.bas, tabObjets, i); // faire debug
 
         return pse;
+    }
+
+    public static float getBestSolution(PSE pse){
+        float max = pse.getPoidsTotal();
+        if (pse.haut != null){
+            float h = getBestSolution(pse.haut);
+            max = Math.max(max, h);
+        }
+        if (pse.bas != null){
+            float b = getBestSolution(pse.bas);
+            max = Math.max(max, b);
+        }
+        return max;
+
+    }
+
+    public static float getBestValeur(PSE pse){
+        float max = pse.getValeurTotale();
+        if (pse.haut != null){
+            float h = getBestValeur(pse.haut);
+            max = Math.max(max, h);
+        }
+        if (pse.bas != null){
+            float b = getBestValeur(pse.bas);
+            max = Math.max(max, b);
+        }
+        return max;
+
     }
 
     public static void main(String[] args) {
         PSE pse = new PSE();
         SacADos sac = new SacADos("C:\\Users\\User\\Desktop\\td-tp\\pjAAV\\input.txt", 3.0f);
+        PSE.setBornes(new Gluton(3.0f, sac.getTabObjets()).getPoidsTotal());
+        PSE.poidsMaximal = 3.0f;
+
+        Dynamique dyna = new Dynamique(3.0f, sac.getTabObjets());
+
+        float f = 0, e = 0;
+        for(Objet obj : dyna.getSac()) {
+            f += obj.getPoids();
+            e += obj.getValeur();
+        }
+        //SacADos sac = new SacADos(3.0f);
         int i = 0;
 
+        //System.out.println(sac.getTabObjets());
 
         PSE newPse = fabriquePSE(pse, sac.getTabObjets(), i);
         System.out.println(newPse.toString());
+        System.out.println("PSE: " + PSE.getBestSolution(newPse) + " " + PSE.getBestValeur(newPse));
+        System.out.println("Dyna: " + f + " " + e);
 
 
     }

@@ -2,12 +2,13 @@ public class Objet implements Comparable {
     private String nom;
     private float valeur, poids;
     private static int id = 0;
+    private int indice;
 
     public Objet(float valeur, float poids, String nom){
         this.valeur = valeur;
         this.poids = poids;
         this.nom = nom;
-        id++;
+        indice = id++;
     }
 
     public float getRapportVP(){
@@ -30,11 +31,7 @@ public class Objet implements Comparable {
 
     @Override
     public String toString() {
-        return "Boite{" +
-                "nom='" + nom + '\'' +
-                ", valeur=" + valeur +
-                ", poids=" + poids +
-                '}';
+        return "["+indice+"]";
     }
 
     @Override
