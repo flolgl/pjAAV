@@ -56,7 +56,7 @@ public class InputParser {
      * @param input la ligne d'input
      * @return true si la ligne d'input respecte le format nom ; poids ; valeur
      */
-    private static boolean isFormatOk(String input){
+    public static boolean isFormatOk(String input){
         return Pattern.matches("^\\s*[A-Za-z0-9\\s]+; [0-9]+.[0-9]+ ; [0-9]+.[0-9]+\\s*", input);
     }
 
@@ -66,7 +66,7 @@ public class InputParser {
      * @param chemin le chemin vers le fichier
      * @return le fichier transformé en lecteur de buffer
      */
-    private static BufferedReader getFile(String chemin){
+    public static BufferedReader getFile(String chemin){
         FileReader file = null;
         BufferedReader br = null;
         try {
