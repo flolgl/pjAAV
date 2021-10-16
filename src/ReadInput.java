@@ -11,18 +11,15 @@ public class ReadInput {
         InputParser.getFile(path);
     }
 
-    public static void methodChoice(String method) throws Exception{
+    public static int methodChoice(String method) throws Exception{
         switch(method){
             case "glouton":
-                System.out.println("GLOUT");
-                break;
+                return 1;
             case "dynamique":
-                System.out.println("DYNA");
-                break;
+                return 2;
             case "pse":
             case "PSE":
-                System.out.println("PSE");
-                break;
+                return 3;
             default:
                 throw new Exception("Méthode inconnue");
         }
@@ -31,17 +28,25 @@ public class ReadInput {
     public static void main(String[] args) throws Exception{
         Scanner sc = new Scanner(System.in);
         System.out.print("$>");
-
         String input = sc.nextLine(); //input
         String[] inputArgs = input.split(" ");                //split
+
         if(inputArgs.length != 4)
             throw new Exception("nombre d'arguments incorrect");    //vérification du nombre d'arguments
+
         if(functionChoice(inputArgs[0]) == -1)
             throw new Exception("fonction incorrecte");             //vérification du nom de la fonction
-        pathChoice(inputArgs[1]);                                   //vérification du chemin
-        float weightChoice = Float.parseFloat(inputArgs[2]);        //vérification du poids max
-        methodChoice(inputArgs[3]);                                 //vérification de la méthode choisie
 
+        String path = inputArgs[1];
+        pathChoice(path);                                           //vérification du chemin
+
+        float weightChoice = Float.parseFloat(inputArgs[2]);        //vérification du poids max
+
+        int methodNumber = methodChoice(inputArgs[3]);              //vérification de la méthode choisie
+
+        SacADos sac = new SacADos(path, weightChoice);
+        System.out.println(sac);
+        // si methodNumber == 1, faire gluton, == 2 faire dyna et == 3 faire PSE
 
     }
 
