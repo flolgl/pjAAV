@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * @author LE GAL Florian
+ * @author LE GAL Florian, BEN FRAJ Ayoub
  * @date 15/10/2021
  * @project pjAAV
  */
@@ -12,18 +12,28 @@ public class Gluton {
     private final ArrayList<Objet> tabObjets;
     private ArrayList<Objet> sac = new ArrayList<>();
 
+    /**
+     * @brief Constructeur de la méthode gloutonne contenant le poids max, la liste des objets
+     * à mettre dans le sac et le sac
+     * @param poidsMaximal Poids maximum du sac
+     * @param tabObjets Liste des objets à mettre dans le sac
+     */
     public Gluton(float poidsMaximal, ArrayList<Objet> tabObjets){
         this.poidsMaximal = poidsMaximal;
         this.tabObjets = new ArrayList<>(tabObjets);
         this.traiterObjets();
     }
 
+    /**
+     * @brief Getter
+     * @return Le sac de la méthode gloutonne
+     */
     public ArrayList<Objet> getSac() {
         return sac;
     }
 
     /**
-     * Première méthode de traitement
+     * @brief Première méthode de traitement
      */
     private void traiterObjets(){
         this.quickSort(0, tabObjets.size()-1);
@@ -32,7 +42,10 @@ public class Gluton {
                 sac.add(b);
     }
 
-
+    /**
+     * @brief Getter
+     * @return Le poids total des objets actuellement dans le sac
+     */
     public float getPoidsTotal(){
         float poids = 0;
         for(Objet b : sac)
@@ -41,10 +54,10 @@ public class Gluton {
     }
 
     /**
-     *
-     * @param indexPremier
-     * @param indexDernier
-     * @return
+     * @brief Méthode de partition de la liste des objets à mettre dans le sac
+     * @param indexPremier Indice du premier objet de la partition de la liste d'objets à ranger dans l'ordre décroissant
+     * @param indexDernier Indice du dernier objet de la partition de la liste d'objets à ranger dans l'ordre décroissant
+     * @return Incrémentation de l'indice afin de mettre fin à la récursivité
      */
     private int partition(int indexPremier, int indexDernier) {
         float pivot = tabObjets.get(indexDernier).getRapportVP();
@@ -61,9 +74,9 @@ public class Gluton {
     }
 
     /**
-     * Tri rapide
-     * @param indexPremier
-     * @param indexDernier
+     * @brief Tri rapide avec partition et appel récursif
+     * @param indexPremier Indice du premier objet de la liste d'objets à ranger dans l'ordre décroissant
+     * @param indexDernier Indice du dernier objet de la liste d'objets à ranger dans l'ordre décroissant
      */
     public void quickSort(int indexPremier, int indexDernier) {
         if(indexPremier < indexDernier) {

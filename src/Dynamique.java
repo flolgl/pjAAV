@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * @author LE GAL Florian
+ * @author LE GAL Florian, BEN FRAJ Ayoub
  * @date 15/10/2021
  * @project pjAAV
  */
@@ -12,18 +12,28 @@ public class Dynamique {
     private final ArrayList<Objet> tabObjets;
     private ArrayList<Objet> sac = new ArrayList<>();
 
+    /**
+     * @brief Constructeur de la méthode dynamique contenant le poids max, la liste des objets
+     * à mettre dans le sac et le sac
+     * @param poidsMaximal
+     * @param tabObjets
+     */
     public Dynamique(float poidsMaximal, ArrayList<Objet> tabObjets){
         this.poidsMaximal = poidsMaximal;
         this.tabObjets = new ArrayList<>(tabObjets);
         this.traiterObjets();
     }
 
+    /**
+     * @brief Getter
+     * @return Le sac de la méthode dynamique
+     */
     public ArrayList<Objet> getSac() {
         return sac;
     }
 
     /**
-     * Méthode permettant de résoudre le problème du sac de façon dynamique
+     * @brief Méthode permettant de résoudre le problème du sac de façon dynamique
      */
     private void traiterObjets() {
 
@@ -45,7 +55,7 @@ public class Dynamique {
     }
 
     /**
-     * Remplissage de la matrice pour la méthode dynamique
+     * @brief Remplissage de la matrice pour la méthode dynamique
      * @return La matrice remplie
      */
     private float[][] fillMatrice(){
@@ -78,10 +88,10 @@ public class Dynamique {
 
     /**
      * Permet de récupérer le poids minimum pour un benef max
-     * @param i dernier indice du tab des objets (ligne avec les plus gros benefs)
-     * @param j l'indice représentant les poids
-     * @param matrice la matrice déjà remplie
-     * @return le poids minimum pour une valeur max
+     * @param i Dernier indice de la liste d'objets (ligne avec les plus gros benefs)
+     * @param j L'indice représentant les poids
+     * @param matrice La matrice déjà remplie
+     * @return Le poids minimum pour une valeur max
      */
     private int benefOptimal(int i, int j, float[][] matrice){
         while(matrice[i][j] == matrice[i][j-1])

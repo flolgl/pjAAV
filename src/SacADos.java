@@ -62,7 +62,7 @@ public class SacADos {
     }
 
     public static void main(String[] args) {
-        SacADos sac = new SacADos("C:\\Users\\User\\Desktop\\td-tp\\pjAAV\\input.txt", 3.0f);
+        SacADos sac = new SacADos(".\\input.txt", 3.0f);
         System.out.println(sac.toString());
     }
 
