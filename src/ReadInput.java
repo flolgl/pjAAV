@@ -3,7 +3,9 @@ import java.util.Scanner;
 public class ReadInput {
 
     public static int functionChoice(String function) {
-        return function == "resoudre-sac-a-dos" ? 0 : -1;
+        if(function.equals("resoudre-sac-a-dos"))
+            return 0;
+        return -1;
     }
 
     public static void methodChoice(String method) throws Exception{
@@ -35,8 +37,9 @@ public class ReadInput {
             throw new Exception("nombre d'arguments incorrect");    //vérification du nombre d'arguments
         if(functionChoice(inputArgs[0]) == -1)
             throw new Exception("fonction incorrecte");             //vérification du nom de la fonction
+        float weightChoice = Float.parseFloat(inputArgs[2]);        //vérification du poids max
         methodChoice(inputArgs[3]);                                 //vérification de la méthode choisie
-        
+
 
     }
 
