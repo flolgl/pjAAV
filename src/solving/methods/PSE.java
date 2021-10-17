@@ -1,3 +1,8 @@
+package solving.methods;
+
+import sac.Objet;
+import sac.SolveSac;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -6,7 +11,7 @@ import java.util.Arrays;
  * @date 14/10/2021
  * @project pjAAV
  */
-public class PSE {
+public class PSE implements SolveSac {
 
     private ArrayList<Objet> valeur;
     private int profondeur;
@@ -84,22 +89,6 @@ public class PSE {
             PSE.borneInferieure = PSE.getValeur(this.valeur);
     }
 
-    /**
-     *
-     */
-    public void chercherSolution(){
-        if (PSE.getValeur(this.valeur) == PSE.borneInferieure)
-            PSE.tabMeilleureValeur = new ArrayList<>(this.valeur);
-
-        else {
-            if (this.bas != null) {
-                this.bas.chercherSolution();
-            }
-            if (this.haut != null)
-                this.haut.chercherSolution();
-        }
-    }
-
 
     /**
      *
@@ -143,37 +132,64 @@ public class PSE {
     }
 
 
-    public ArrayList<Objet> getTabMeilleureValeur(){
+    @Override
+    public void resoudre() {
+        if (PSE.getValeur(this.valeur) == PSE.borneInferieure)
+            PSE.tabMeilleureValeur = new ArrayList<>(this.valeur);
+
+        else {
+            if (this.bas != null) {
+                this.bas.resoudre();
+            }
+            if (this.haut != null)
+                this.haut.resoudre();
+        }
+    }
+
+    @Override
+    public ArrayList<Objet> getSolution() {
+        PSE.removeNull();
         return PSE.tabMeilleureValeur;
     }
 
+    public static void removeNull(){
+        ArrayList<Objet> sol = new ArrayList<>();
+        for(Objet objet : tabMeilleureValeur){
+            if (objet != null)
+                sol.add(objet);
+        }
+        tabMeilleureValeur = sol;
+            
+    }
 
-
+/*
     public static void main(String[] args) {
 
-        SacADos sac = new SacADos("C:\\Users\\User\\Desktop\\td-tp\\pjAAV\\input.txt", 3.0f);
+        sac.SacADos sac = new sac.SacADos("C:\\Users\\User\\Desktop\\td-tp\\pjAAV\\input.txt", 3.0f);
 
-        Dynamique dyna = new Dynamique(3.0f, sac.getTabObjets());
+        solving.methods.Dynamique dyna = new solving.methods.Dynamique(3.0f, sac.getTabObjets());
 
-        Objet[] tabObj = new Objet[sac.getTabObjets().size()];
-        Objet[] listeObj = sac.getTabObjets().toArray(new Objet[0]);
+        sac.Objet[] tabObj = new sac.Objet[sac.getTabObjets().size()];
+        sac.Objet[] listeObj = sac.getTabObjets().toArray(new sac.Objet[0]);
 
-        PSE arbre = new PSE(sac.getTabObjets(), 3.0f, tabObj, 0);
+        solving.methods.PSE arbre = new solving.methods.PSE(sac.getTabObjets(), 3.0f, tabObj, 0);
 
         arbre.chercherSolution();
 
         float f = 0, e = 0;
-        for(Objet obj : dyna.getSac()) {
+        for(sac.Objet obj : dyna.getSac()) {
             f += obj.getPoids();
             e += obj.getValeur();
         }
-        ArrayList<Objet> tabSolution = arbre.getTabMeilleureValeur();
+        ArrayList<sac.Objet> tabSolution = arbre.getTabMeilleureValeur();
 
         System.out.println("Dyna: " + f + " " + e);
 
         System.out.println(tabSolution);
-        System.out.println(PSE.getPoids(tabSolution));
-        System.out.println(PSE.getValeur(tabSolution));
+        System.out.println(solving.methods.PSE.getPoids(tabSolution));
+        System.out.println(solving.methods.PSE.getValeur(tabSolution));
     }
+
+ */
 
 }

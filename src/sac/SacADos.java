@@ -1,3 +1,8 @@
+package sac;
+
+import app.InputParser;
+import solving.methods.Gluton;
+
 import java.util.ArrayList;
 
 public class SacADos {
@@ -5,6 +10,7 @@ public class SacADos {
     private ArrayList<Objet> tabObjets;
     private float poidsMaximal;
     private ArrayList<Objet> sac = new ArrayList<>();
+    private SolveSac methodeSolve = null;
 
     public SacADos(){
         tabObjets = new ArrayList<>();
@@ -16,15 +22,23 @@ public class SacADos {
         this.poidsMaximal = poidsMaximal;
         this.tabObjets = InputParser.getObjetsFromInput(chemin);
 
-        //sac = new Gluton(poidsMaximal, tabObjets).getSac();
-        //sac = new Dynamique(poidsMaximal, tabObjets).getSac();
+        //sac = new solving.methods.Gluton(poidsMaximal, tabObjets).getSac();
+        //sac = new solving.methods.Dynamique(poidsMaximal, tabObjets).getSac();
 
         //System.out.println(sac);
     }
 
-    public void glutonSolve(){
-        sac = new Gluton(poidsMaximal, tabObjets).getSac();
+    public void setMethodeSolve(SolveSac methode){
+        methodeSolve = methode;
     }
+
+    public void resoudre(int choice) throws NoMethodeException {
+        if (methodeSolve == null)
+            throw new NoMethodeException();
+        methodeSolve.resoudre();
+        sac = methodeSolve.getSolution();
+    }
+
 
     public ArrayList<Objet> getTabObjets() {
         return tabObjets;
@@ -61,10 +75,13 @@ public class SacADos {
         return sb.toString();
     }
 
+    /*
     public static void main(String[] args) {
-        SacADos sac = new SacADos(".\\input.txt", 3.0f);
+        sac.SacADos sac = new sac.SacADos(".\\input.txt", 3.0f);
         System.out.println(sac.toString());
     }
+
+     */
 
 
 }

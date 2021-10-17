@@ -1,3 +1,5 @@
+package sac;
+
 public class Objet implements Comparable {
     private String nom;
     private float valeur, poids;

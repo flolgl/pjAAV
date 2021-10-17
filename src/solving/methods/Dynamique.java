@@ -1,11 +1,15 @@
+package solving.methods;
+
 import java.util.ArrayList;
+import sac.Objet;
+import sac.SolveSac;
 
 /**
  * @author LE GAL Florian, BEN FRAJ Ayoub
  * @date 15/10/2021
  * @project pjAAV
  */
-public class Dynamique {
+public class Dynamique implements SolveSac {
 
 
     private final float poidsMaximal;
@@ -24,33 +28,11 @@ public class Dynamique {
         this.traiterObjets();
     }
 
-    /**
-     * @brief Getter
-     * @return Le sac de la méthode dynamique
-     */
-    public ArrayList<Objet> getSac() {
-        return sac;
-    }
 
-    /**
-     * @brief Méthode permettant de résoudre le problème du sac de façon dynamique
-     */
+
     private void traiterObjets() {
 
-        int poidsMax = (int)(poidsMaximal*10);
-        float[][] matrice = this.fillMatrice();
 
-        int i = tabObjets.size() - 1;
-        int j = this.benefOptimal(i, poidsMax, matrice);
-
-        while(j > 0) {
-            while (i > 0 && matrice[i][j] == matrice[i - 1][j])
-                i--;
-            j = j - (int)(tabObjets.get(i).getPoids() * 10);
-            if (j >= 0)
-                sac.add(tabObjets.get(i));
-            i--;
-        }
 
     }
 
@@ -100,4 +82,26 @@ public class Dynamique {
     }
 
 
+    @Override
+    public void resoudre() {
+        int poidsMax = (int)(poidsMaximal*10);
+        float[][] matrice = this.fillMatrice();
+
+        int i = tabObjets.size() - 1;
+        int j = this.benefOptimal(i, poidsMax, matrice);
+
+        while(j > 0) {
+            while (i > 0 && matrice[i][j] == matrice[i - 1][j])
+                i--;
+            j = j - (int)(tabObjets.get(i).getPoids() * 10);
+            if (j >= 0)
+                sac.add(tabObjets.get(i));
+            i--;
+        }
+    }
+
+    @Override
+    public ArrayList<Objet> getSolution() {
+        return sac;
+    }
 }

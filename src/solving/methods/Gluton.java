@@ -1,3 +1,8 @@
+package solving.methods;
+
+import sac.Objet;
+import sac.SolveSac;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -6,7 +11,7 @@ import java.util.Collections;
  * @date 15/10/2021
  * @project pjAAV
  */
-public class Gluton {
+public class Gluton implements SolveSac{
 
     private final float poidsMaximal;
     private final ArrayList<Objet> tabObjets;
@@ -21,16 +26,9 @@ public class Gluton {
     public Gluton(float poidsMaximal, ArrayList<Objet> tabObjets){
         this.poidsMaximal = poidsMaximal;
         this.tabObjets = new ArrayList<>(tabObjets);
-        this.traiterObjets();
     }
 
-    /**
-     * @brief Getter
-     * @return Le sac de la méthode gloutonne
-     */
-    public ArrayList<Objet> getSac() {
-        return sac;
-    }
+
 
     /**
      * @brief Première méthode de traitement
@@ -86,4 +84,14 @@ public class Gluton {
         }
     }
 
+    @Override
+    public void resoudre() {
+        this.traiterObjets();
+    }
+
+
+    @Override
+    public ArrayList<Objet> getSolution() {
+        return sac;
+    }
 }

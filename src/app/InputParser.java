@@ -1,8 +1,16 @@
+package app;
+
+import sac.FabriqueSolvingMethode;
+import sac.NoMethodeException;
+import sac.Objet;
+import sac.SacADos;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -19,6 +27,7 @@ public class InputParser {
 
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
         return tabObj;
     }
@@ -73,10 +82,77 @@ public class InputParser {
             file = new FileReader(chemin);
             br = new BufferedReader(file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            return null;
         }
 
         return br;
     }
+
+
+
+    public static void pathChoice(String path) {
+        InputParser.isFormatOk(path);
+        InputParser.getFile(path);
+    }
+
+    public static int methodChoice(String method) throws Exception{
+        switch(method.toLowerCase(Locale.ROOT)){
+            case "glouton":
+                return 1;
+            case "dynamique":
+                return 2;
+            case "pse":
+                return 3;
+            default:
+                throw new Exception("Méthode inconnue");
+        }
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+        if (args.length != 3) {
+            System.out.println("Nombre d'arguments incorrect. Merci de respecter le format : resoudre-sac-a-dos chemin poids-maximal methode(= gluton, dynamique, pse)\n");
+            return;
+        }
+        if (InputParser.getFile(args[0]) == null){
+            System.out.println("Fichier inexistant\n");
+            return;
+        }
+        if(!isNumeric(args[1])){
+            System.out.println("Poids maximum doit être numérique\n");
+            return;
+        }
+
+        int choice;
+        try{
+            choice = methodChoice(args[2]);
+        }catch(Exception e){
+            System.out.println("Mauvais nom de méthode : "+ args[2] + " au lieu de gluton ou dynamique ou pse)\n");
+            return;
+        }
+
+        float poids = Float.parseFloat(args[1]);
+
+        SacADos sac = new SacADos(args[0], poids);
+        sac.setMethodeSolve(FabriqueSolvingMethode.createSolvingMethode(choice, poids, sac.getTabObjets()));
+
+        try {
+            sac.resoudre(choice);
+            System.out.println(sac.toString());
+        }catch (NoMethodeException e){
+            System.out.println("Mauvais nom de méthode : "+ args[2] + " au lieu de gluton ou dynamique ou pse)\n");
+        }
+
+    }
+
 
 }
