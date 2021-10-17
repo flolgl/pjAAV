@@ -20,6 +20,6 @@ public class FabriqueSolvingMethode {
         else if (choice == 2)
             return new Dynamique(poids, objets);
         else
-            return new PSE(objets,poids,new Objet[objets.size()], 0);
+            return new PSE(objets,poids,new ArrayList<Objet>(), 0);
     }
 }
