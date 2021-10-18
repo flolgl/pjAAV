@@ -5,6 +5,11 @@ import solving.methods.Gluton;
 
 import java.util.ArrayList;
 
+/**
+ * @author LE GAL Florian, BEN FRAJ Ayoub
+ * @date 18/10/2021
+ * @project pjAAV
+ */
 public class SacADos {
 
     private ArrayList<Objet> tabObjets;
@@ -12,27 +17,38 @@ public class SacADos {
     private ArrayList<Objet> sac = new ArrayList<>();
     private SolveSac methodeSolve = null;
 
+    /**
+     * @brief Constructeur du problème du sac à dos
+     */
     public SacADos(){
         tabObjets = new ArrayList<>();
         poidsMaximal = -1;
     }
 
+    /**
+     * @brief Constructeur du problème du sac à dos
+     * @param chemin Le chemin absolu vers le fichier contenant les objets
+     * @param poidsMaximal Le poids maximum que peut supporter le sac
+     */
     public SacADos(String chemin, float poidsMaximal){
         this();
         this.poidsMaximal = poidsMaximal;
         this.tabObjets = InputParser.getObjetsFromInput(chemin);
-
-        //sac = new solving.methods.Gluton(poidsMaximal, tabObjets).getSac();
-        //sac = new solving.methods.Dynamique(poidsMaximal, tabObjets).getSac();
-
-        //System.out.println(sac);
     }
 
+    /**
+     * @brief Setter
+     * @param methode La méthode à résoudre
+     */
     public void setMethodeSolve(SolveSac methode){
         methodeSolve = methode;
     }
 
-    public void resoudre(int choice) throws NoMethodeException {
+    /**
+     * @brief Méthode qui fait appel à l'algorithme en fonction de la méthode choisie précédemment
+     * @throws NoMethodeException Méthode choisie inexistante
+     */
+    public void resoudre() throws NoMethodeException {
         if (methodeSolve == null)
             throw new NoMethodeException();
         methodeSolve.resoudre();
@@ -40,17 +56,29 @@ public class SacADos {
     }
 
 
+    /**
+     * @brief Getter
+     * @return La liste d'objet à mettre dans le sac (ou non)
+     */
     public ArrayList<Objet> getTabObjets() {
         return tabObjets;
     }
 
+    /**
+     * @brief Getter
+     * @return Le poids total actuel du sac
+     */
     private float getPoidsTotal(){
         float poids = 0;
         for(Objet b : sac)
             poids+=b.getPoids();
         return poids;
     }
-    
+
+    /**
+     * @brief Getter
+     * @return La valeur totale actuelle dans le sac
+     */
     private float getValeurTotale(){
         float valeur = 0;
         for(Objet b : sac)
@@ -74,14 +102,6 @@ public class SacADos {
 
         return sb.toString();
     }
-
-    /*
-    public static void main(String[] args) {
-        sac.SacADos sac = new sac.SacADos(".\\input.txt", 3.0f);
-        System.out.println(sac.toString());
-    }
-
-     */
 
 
 }
