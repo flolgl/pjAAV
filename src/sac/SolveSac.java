@@ -3,7 +3,7 @@ package sac;
 import java.util.ArrayList;
 
 /**
- * @author LE GAL Florian
+ * @author LE GAL Florian, BEN FRAJ Ayoub
  * @date 17/10/2021
  * @project pjAAV
  */

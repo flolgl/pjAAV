@@ -8,12 +8,19 @@ import solving.methods.PSE;
 import java.util.ArrayList;
 
 /**
- * @author LE GAL Florian
+ * @author LE GAL Florian, BEN FRAJ Ayoub
  * @date 17/10/2021
  * @project pjAAV
  */
 public class FabriqueSolvingMethode {
 
+    /**
+     * @brief Permet la création de la méthode et sa résolution
+     * @param choice Le numéro de la méthode choisie
+     * @param poids Le poids du sac
+     * @param objets Les objets à mettre dans le sac (ou non)
+     * @return La méthode choisie avec le poids maximum et la liste d'objets à mettre dans le sac (non)
+     */
     public static SolveSac createSolvingMethode(int choice, float poids, ArrayList<Objet> objets){
         if(choice == 1)
             return new Gluton(poids, objets);

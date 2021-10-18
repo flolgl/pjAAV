@@ -19,6 +19,12 @@ import java.util.regex.Pattern;
  * @project pjAAV
  */
 public class InputParser {
+
+    /**
+     * Permet de récupérer la liste d'objets grâce à la saisie dans le fichier texte
+     * @param chemin Le chemin vers le fichier texte contenant la saisie de la liste d'objets
+     * @return La liste d'objets
+     */
     public static ArrayList<Objet> getObjetsFromInput(String chemin){
         BufferedReader br = getFile(chemin);
         ArrayList<Objet> tabObj = null;
@@ -89,13 +95,12 @@ public class InputParser {
         return br;
     }
 
-
-
-    public static void pathChoice(String path) {
-        InputParser.isFormatOk(path);
-        InputParser.getFile(path);
-    }
-
+    /**
+     * @brief Permet d'attribuer un numéro à la méthode choisie
+     * @param method La méthode saisie
+     * @return Le numéro de la méthode saisie
+     * @throws Exception Saisie incorrecte
+     */
     public static int methodChoice(String method) throws Exception{
         switch(method.toLowerCase(Locale.ROOT)){
             case "glouton":
@@ -109,6 +114,11 @@ public class InputParser {
         }
     }
 
+    /**
+     * @brief Permet de vérifier que la valeur saisie est numérique
+     * @param str La valeur saisie
+     * @return true si la valeur est numérique sinon false
+     */
     public static boolean isNumeric(String str) {
         try {
             Double.parseDouble(str);
@@ -146,7 +156,7 @@ public class InputParser {
         sac.setMethodeSolve(FabriqueSolvingMethode.createSolvingMethode(choice, poids, sac.getTabObjets()));
 
         try {
-            sac.resoudre(choice);
+            sac.resoudre();
             System.out.println(sac.toString());
         }catch (NoMethodeException e){
             System.out.println("Mauvais nom de méthode : "+ args[2] + " au lieu de gluton ou dynamique ou pse)\n");

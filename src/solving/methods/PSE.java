@@ -22,12 +22,12 @@ public class PSE implements SolveSac {
     private static float borneInferieure;
 
 
-    /**
-     *
-     * @param listeObjetsSac
-     * @param poidsLimite
-     * @param tabObj
-     * @param idx
+    /** @brief Constructeur de la méthode PSE contenant le poids max du sac, la liste des objets dans le sac, les objets à
+     * mettre dans le sac et un indice indiquant la taille de la branche de l'arbre
+     * @param listeObjetsSac Les objets dans le sac
+     * @param poidsLimite Le poids max du sac
+     * @param tabObj Les objets à mettre dans le sac
+     * @param idx La taille de la branche
      */
     public PSE(ArrayList<Objet> listeObjetsSac, float poidsLimite, ArrayList<Objet> tabObj, int idx){
         if (idx <= listeObjetsSac.size()) {
@@ -56,9 +56,9 @@ public class PSE implements SolveSac {
     }
 
     /**
-     *
-     * @param objets
-     * @return
+     * @brief Getter
+     * @param objets Tous les objets (dans le sac ou non)
+     * @return La valeur de la totalité des objets
      */
     public static float getValeur(ArrayList<Objet> objets){
         float valeur = 0;
@@ -70,9 +70,9 @@ public class PSE implements SolveSac {
     }
 
     /**
-     *
-     * @param objets
-     * @return
+     * @brief Getter
+     * @param objets Tous les objets (dans le sac ou non)
+     * @return Le poids de la totalité des objets
      */
     public static float getPoids(ArrayList<Objet> objets){
         float valeur = 0;
@@ -84,7 +84,7 @@ public class PSE implements SolveSac {
     }
 
     /**
-     *
+     * @brief Méthode qui permet de calculer une borne inférieure du PSE
      */
     public void calculBorneInferieure(){
         if (PSE.getValeur(this.valeur)> PSE.borneInferieure)
@@ -93,9 +93,9 @@ public class PSE implements SolveSac {
 
 
     /**
-     *
-     * @param listeObjets
-     * @return
+     * @brief Méthode  qui permet de calculer le poids d'un tableau d'objets
+     * @param listeObjets Le tableau d'objets
+     * @return Le poids total du tableau d'objets
      */
     public float poidsListeObjets(ArrayList<Objet> listeObjets){
         float res=0.0f;
@@ -108,8 +108,8 @@ public class PSE implements SolveSac {
     }
 
     /**
-     *
-     * @param listeObjetsSac
+     * @brief Méthode permettant de calculer une borne supérieure pour une liste d'objets
+     * @param listeObjetsSac La liste d'objets
      */
     public void calculBorneSuperieure(ArrayList<Objet> listeObjetsSac){
         float res = 0.0f;
@@ -141,6 +141,9 @@ public class PSE implements SolveSac {
         return PSE.tabMeilleureValeur;
     }
 
+    /**
+     * @brief Méthode permettant de retirer les objets null du tableau aux meilleures valeurs
+     */
     public static void removeNull(){
         ArrayList<Objet> sol = new ArrayList<>();
         for(Objet objet : tabMeilleureValeur){
