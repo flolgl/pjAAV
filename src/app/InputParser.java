@@ -88,7 +88,6 @@ public class InputParser {
             file = new FileReader(chemin);
             br = new BufferedReader(file);
         } catch (FileNotFoundException e) {
-            //e.printStackTrace();
             return null;
         }
 
