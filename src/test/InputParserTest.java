@@ -18,7 +18,7 @@ class InputParserTest {
     @Test
     void getObjetsFromInput() {
         ArrayList<Objet> listObj = new ArrayList<Objet>();
-        String chemin = "C:\\Users\\ayoub\\OneDrive\\Documents\\GitHub\\pjAAV\\input.txt";
+        String chemin = ".\\input.txt";
 
         ArrayList<Objet> listObjInput = InputParser.getObjetsFromInput(chemin);
         listObj.addAll(listObjInput);

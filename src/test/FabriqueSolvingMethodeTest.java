@@ -20,7 +20,7 @@ class FabriqueSolvingMethodeTest {
         int choice2 = 2;
         int choice3 = 3;
         float poids = 30;
-        String chemin = "C:\\Users\\ayoub\\OneDrive\\Documents\\GitHub\\pjAAV\\input.txt";
+        String chemin = ".\\input.txt";
         ArrayList<Objet> objets = InputParser.getObjetsFromInput(chemin);
         FabriqueSolvingMethode fsm = new FabriqueSolvingMethode();
 

@@ -9,7 +9,7 @@ class SacADosTest {
 
     @Test
     void testToString() {
-        String chemin = "C:\\Users\\ayoub\\OneDrive\\Documents\\GitHub\\pjAAV\\input.txt";
+        String chemin = ".\\input.txt";
         SacADos sac = new SacADos(chemin, 30);
         String output = "Tab des boites: \n" +
                 "Lampe \n" +
