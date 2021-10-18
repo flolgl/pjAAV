@@ -71,7 +71,7 @@ public class InputParser {
      * @param input la ligne d'input
      * @return true si la ligne d'input respecte le format nom ; poids ; valeur
      */
-    public static boolean isFormatOk(String input){
+    private static boolean isFormatOk(String input){
         return Pattern.matches("^\\s*[A-Za-z0-9\\s]+; [0-9]+.[0-9]+ ; [0-9]+.[0-9]+\\s*", input);
     }
 
@@ -81,7 +81,7 @@ public class InputParser {
      * @param chemin le chemin vers le fichier
      * @return le fichier transformé en lecteur de buffer
      */
-    public static BufferedReader getFile(String chemin){
+    private static BufferedReader getFile(String chemin){
         FileReader file = null;
         BufferedReader br = null;
         try {
@@ -101,7 +101,7 @@ public class InputParser {
      * @return Le numéro de la méthode saisie
      * @throws Exception Saisie incorrecte
      */
-    public static int methodChoice(String method) throws Exception{
+    private static int methodChoice(String method) throws Exception{
         switch(method.toLowerCase(Locale.ROOT)){
             case "glouton":
                 return 1;
@@ -119,7 +119,7 @@ public class InputParser {
      * @param str La valeur saisie
      * @return true si la valeur est numérique sinon false
      */
-    public static boolean isNumeric(String str) {
+    private static boolean isNumeric(String str) {
         try {
             Double.parseDouble(str);
             return true;

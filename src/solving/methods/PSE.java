@@ -60,7 +60,7 @@ public class PSE implements SolveSac {
      * @param objets Tous les objets (dans le sac ou non)
      * @return La valeur de la totalité des objets
      */
-    public static float getValeur(ArrayList<Objet> objets){
+    private static float getValeur(ArrayList<Objet> objets){
         float valeur = 0;
         for (Objet obj : objets){
             if (obj != null)
@@ -74,7 +74,7 @@ public class PSE implements SolveSac {
      * @param objets Tous les objets (dans le sac ou non)
      * @return Le poids de la totalité des objets
      */
-    public static float getPoids(ArrayList<Objet> objets){
+    private static float getPoids(ArrayList<Objet> objets){
         float valeur = 0;
         for (Objet obj : objets){
             if (obj != null)
@@ -86,7 +86,7 @@ public class PSE implements SolveSac {
     /**
      * @brief Méthode qui permet de calculer une borne inférieure du PSE
      */
-    public void calculBorneInferieure(){
+    private void calculBorneInferieure(){
         if (PSE.getValeur(this.valeur)> PSE.borneInferieure)
             PSE.borneInferieure = PSE.getValeur(this.valeur);
     }
@@ -97,7 +97,7 @@ public class PSE implements SolveSac {
      * @param listeObjets Le tableau d'objets
      * @return Le poids total du tableau d'objets
      */
-    public float poidsListeObjets(ArrayList<Objet> listeObjets){
+    private float poidsListeObjets(ArrayList<Objet> listeObjets){
         float res=0.0f;
         for (Objet listeObjet : listeObjets) {
             if (listeObjet != null) {
@@ -111,7 +111,7 @@ public class PSE implements SolveSac {
      * @brief Méthode permettant de calculer une borne supérieure pour une liste d'objets
      * @param listeObjetsSac La liste d'objets
      */
-    public void calculBorneSuperieure(ArrayList<Objet> listeObjetsSac){
+    private void calculBorneSuperieure(ArrayList<Objet> listeObjetsSac){
         float res = 0.0f;
         res += PSE.getValeur(this.valeur); // valeur totale du noeud courant
         for (int i=this.profondeur; i<listeObjetsSac.size(); i++)

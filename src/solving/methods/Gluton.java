@@ -44,7 +44,7 @@ public class Gluton implements SolveSac{
      * @brief Getter
      * @return Le poids total des objets actuellement dans le sac
      */
-    public float getPoidsTotal(){
+    private float getPoidsTotal(){
         float poids = 0;
         for(Objet b : sac)
             poids+=b.getPoids();
@@ -76,7 +76,7 @@ public class Gluton implements SolveSac{
      * @param indexPremier Indice du premier objet de la liste d'objets à ranger dans l'ordre décroissant
      * @param indexDernier Indice du dernier objet de la liste d'objets à ranger dans l'ordre décroissant
      */
-    public void quickSort(int indexPremier, int indexDernier) {
+    private void quickSort(int indexPremier, int indexDernier) {
         if(indexPremier < indexDernier) {
             int partitioningIndex = partition(indexPremier, indexDernier);
             quickSort(indexPremier, partitioningIndex - 1);
