@@ -1,12 +1,11 @@
 package test;
 
-import app.InputParser;
+import app.Application;
 import org.junit.jupiter.api.Test;
 import sac.FabriqueSolvingMethode;
 import sac.Objet;
 import solving.methods.Dynamique;
-import solving.methods.Gluton;
-import solving.methods.PSE;
+import solving.methods.Glouton;
 
 import java.util.ArrayList;
 
@@ -21,11 +20,10 @@ class FabriqueSolvingMethodeTest {
         int choice3 = 3;
         float poids = 30;
         String chemin = ".\\input.txt";
-        ArrayList<Objet> objets = InputParser.getObjetsFromInput(chemin);
-        FabriqueSolvingMethode fsm = new FabriqueSolvingMethode();
+        ArrayList<Objet> objets = Application.getObjetsFromInput(chemin);
 
-        assertEquals(fsm.createSolvingMethode(choice1, poids, objets).getSolution(), new Gluton(poids, objets).getSolution());
-        assertEquals(fsm.createSolvingMethode(choice2, poids, objets).getSolution(), new Dynamique(poids, objets).getSolution());
+        assertEquals(FabriqueSolvingMethode.createSolvingMethode(choice1, poids, objets).getSolution(), new Glouton(poids, objets).getSolution());
+        assertEquals(FabriqueSolvingMethode.createSolvingMethode(choice2, poids, objets).getSolution(), new Dynamique(poids, objets).getSolution());
         //assertEquals(fsm.createSolvingMethode(choice3, poids, objets).getSolution(), new PSE(objets, poids, new ArrayList<>(), 0).getSolution());
     }
 }

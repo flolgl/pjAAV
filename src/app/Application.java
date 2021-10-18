@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * @date 15/10/2021
  * @project pjAAV
  */
-public class InputParser {
+public class Application {
 
     /**
      * Permet de récupérer la liste d'objets grâce à la saisie dans le fichier texte
@@ -62,7 +62,7 @@ public class InputParser {
      */
     private static Objet getNewObjet(String input){
         String[] sTab = input.split(";");
-        return new Objet(Float.parseFloat(sTab[2]), Float.parseFloat(sTab[1]), sTab[0]);
+        return new Objet(Double.parseDouble(sTab[2]), Double.parseDouble(sTab[1]), sTab[0]);
     }
 
 
@@ -132,7 +132,7 @@ public class InputParser {
             System.out.println("Nombre d'arguments incorrect. Merci de respecter le format : resoudre-sac-a-dos chemin poids-maximal methode(= gluton, dynamique, pse)\n");
             return;
         }
-        if (InputParser.getFile(args[0]) == null){
+        if (Application.getFile(args[0]) == null){
             System.out.println("Fichier inexistant\n");
             return;
         }
@@ -149,7 +149,7 @@ public class InputParser {
             return;
         }
 
-        float poids = Float.parseFloat(args[1]);
+        double poids = Double.parseDouble(args[1]);
 
         SacADos sac = new SacADos(args[0], poids);
         sac.setMethodeSolve(FabriqueSolvingMethode.createSolvingMethode(choice, poids, sac.getTabObjets()));

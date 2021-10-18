@@ -1,7 +1,6 @@
 package sac;
 
-import app.InputParser;
-import solving.methods.Gluton;
+import app.Application;
 
 import java.util.ArrayList;
 
@@ -12,9 +11,13 @@ import java.util.ArrayList;
  */
 public class SacADos {
 
+    // Le tableau des objets à mettre ou non dans le sac
     private ArrayList<Objet> tabObjets;
-    private float poidsMaximal;
+    // Le poids max du sac
+    private double poidsMaximal;
+    // Le tableau dynamique stockant le sac solution
     private ArrayList<Objet> sac = new ArrayList<>();
+    // La méthode pour trouver la solution
     private SolveSac methodeSolve = null;
 
     /**
@@ -30,10 +33,10 @@ public class SacADos {
      * @param chemin Le chemin absolu vers le fichier contenant les objets
      * @param poidsMaximal Le poids maximum que peut supporter le sac
      */
-    public SacADos(String chemin, float poidsMaximal){
+    public SacADos(String chemin, double poidsMaximal){
         this();
         this.poidsMaximal = poidsMaximal;
-        this.tabObjets = InputParser.getObjetsFromInput(chemin);
+        this.tabObjets = Application.getObjetsFromInput(chemin);
     }
 
     /**
@@ -58,7 +61,7 @@ public class SacADos {
 
     /**
      * @brief Getter
-     * @return La liste d'objet à mettre dans le sac (ou non)
+     * @return La liste d'objets à mettre dans le sac (ou non)
      */
     public ArrayList<Objet> getTabObjets() {
         return tabObjets;
@@ -66,10 +69,10 @@ public class SacADos {
 
     /**
      * @brief Getter
-     * @return Le poids total actuel du sac
+     * @return Le poids total sac
      */
-    private float getPoidsTotal(){
-        float poids = 0;
+    private double getPoidsTotal(){
+        double poids = 0;
         for(Objet b : sac)
             poids+=b.getPoids();
         return poids;
@@ -77,10 +80,10 @@ public class SacADos {
 
     /**
      * @brief Getter
-     * @return La valeur totale actuelle dans le sac
+     * @return La valeur totale du sac
      */
-    private float getValeurTotale(){
-        float valeur = 0;
+    private double getValeurTotale(){
+        double valeur = 0;
         for(Objet b : sac)
             valeur+=b.getValeur();
         return valeur;
@@ -97,7 +100,7 @@ public class SacADos {
         for(Objet b : sac)
             sb.append(b.getNom()).append("\n");
 
-        sb.append("Poids total: ").append(this.getPoidsTotal()).append("\n");
+        sb.append("Poids total: ").append(this.getPoidsTotal()).append("/").append(this.poidsMaximal).append("kg").append("\n");
         sb.append("Valeur totale: ").append(this.getValeurTotale());
 
         return sb.toString();

@@ -2,7 +2,7 @@ package sac;
 
 
 import solving.methods.Dynamique;
-import solving.methods.Gluton;
+import solving.methods.Glouton;
 import solving.methods.PSE;
 
 import java.util.ArrayList;
@@ -21,12 +21,13 @@ public class FabriqueSolvingMethode {
      * @param objets Les objets à mettre dans le sac (ou non)
      * @return La méthode choisie avec le poids maximum et la liste d'objets à mettre dans le sac (non)
      */
-    public static SolveSac createSolvingMethode(int choice, float poids, ArrayList<Objet> objets){
+    public static SolveSac createSolvingMethode(int choice, double poids, ArrayList<Objet> objets){
         if(choice == 1)
-            return new Gluton(poids, objets);
+            return new Glouton(poids, objets);
         else if (choice == 2)
             return new Dynamique(poids, objets);
         else
-            return new PSE(objets,poids,new ArrayList<Objet>(), 0);
+            //return new PSE(objets,poids, new ArrayList<>(), 0);
+            return new PSE(objets,poids);
     }
 }

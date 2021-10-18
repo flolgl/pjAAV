@@ -11,10 +11,13 @@ import java.util.Collections;
  * @date 15/10/2021
  * @project pjAAV
  */
-public class Gluton implements SolveSac{
+public class Glouton implements SolveSac{
 
-    private final float poidsMaximal;
+    // Le poids max du sac
+    private final double poidsMaximal;
+    // Le tableau des objets à mettre ou non dans le sac
     private final ArrayList<Objet> tabObjets;
+    // Le tableau dynamique stockant le sac solution
     private ArrayList<Objet> sac = new ArrayList<>();
 
     /**
@@ -23,29 +26,17 @@ public class Gluton implements SolveSac{
      * @param poidsMaximal Poids maximum du sac
      * @param tabObjets Liste des objets à mettre dans le sac
      */
-    public Gluton(float poidsMaximal, ArrayList<Objet> tabObjets){
+    public Glouton(double poidsMaximal, ArrayList<Objet> tabObjets){
         this.poidsMaximal = poidsMaximal;
         this.tabObjets = new ArrayList<>(tabObjets);
-    }
-
-
-
-    /**
-     * @brief Première méthode de traitement
-     */
-    private void traiterObjets(){
-        this.quickSort(0, tabObjets.size()-1);
-        for(Objet b : tabObjets)
-            if(this.getPoidsTotal() + b.getPoids() <= this.poidsMaximal)
-                sac.add(b);
     }
 
     /**
      * @brief Getter
      * @return Le poids total des objets actuellement dans le sac
      */
-    private float getPoidsTotal(){
-        float poids = 0;
+    public double getPoidsTotal(){
+        double poids = 0;
         for(Objet b : sac)
             poids+=b.getPoids();
         return poids;
@@ -58,7 +49,7 @@ public class Gluton implements SolveSac{
      * @return Incrémentation de l'indice afin de mettre fin à la récursivité
      */
     private int partition(int indexPremier, int indexDernier) {
-        float pivot = tabObjets.get(indexDernier).getRapportVP();
+        double pivot = tabObjets.get(indexDernier).getRapportVP();
         int i = (indexPremier - 1);
         for(int j = indexPremier; j <= indexDernier - 1; j++) {
             if(tabObjets.get(j).getRapportVP() > pivot) {
@@ -86,7 +77,10 @@ public class Gluton implements SolveSac{
 
     @Override
     public void resoudre() {
-        this.traiterObjets();
+        this.quickSort(0, tabObjets.size()-1);
+        for(Objet b : tabObjets)
+            if(this.getPoidsTotal() + b.getPoids() <= this.poidsMaximal)
+                sac.add(b);
     }
 
 

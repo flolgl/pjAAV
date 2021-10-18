@@ -5,11 +5,12 @@ package sac;
  * @date 18/10/2021
  * @project pjAAV
  */
-public class Objet implements Comparable {
+public class Objet {
+    // Nom de l'objet, pour des raisons d'affichage
     private String nom;
-    private float valeur, poids;
-    private static int id = 0;
-    private int indice;
+    // Poids et valeur (argent) de l'objet
+    private double valeur, poids;
+
 
     /**
      * @brief Constructeur pour un objet à mettre dans un sac ou non
@@ -17,18 +18,17 @@ public class Objet implements Comparable {
      * @param poids Le poids de l'objet
      * @param nom Le nom de l'objet
      */
-    public Objet(float valeur, float poids, String nom){
+    public Objet(double valeur, double poids, String nom){
         this.valeur = valeur;
         this.poids = poids;
         this.nom = nom;
-        indice = id++;
     }
 
     /**
      * @brief Getter
      * @return La valeur d'un objet divisée par son poids
      */
-    public float getRapportVP(){
+    public double getRapportVP(){
         return valeur/poids;
     }
 
@@ -44,7 +44,7 @@ public class Objet implements Comparable {
      * @brief Getter
      * @return Le poids de l'objet
      */
-    public float getPoids(){
+    public double getPoids(){
         return poids;
     }
 
@@ -52,32 +52,18 @@ public class Objet implements Comparable {
      * @brief Getter
      * @return La valeur de l'objet
      */
-    public float getValeur(){
+    public double getValeur(){
         return valeur;
     }
 
 
     /**
      * @brief toString
-     * @return L'identifiant de l'objet
+     * @return Le nom de l'objet avec son poids et sa valeur
      */
     @Override
     public String toString() {
-        return "["+indice+"]";
+        return "Objet : " + this.nom + " Valeur : " + this.valeur + " Poids : " + this.poids;
     }
 
-    /**
-     *
-     * @param o L'objet compareur
-     * @return -1 si inférieur au compareur, 0 si égal et 1 si supérieur
-     */
-    @Override
-    public int compareTo(Object o) {
-        Objet b = (Objet)o;
-        float compa = this.getRapportVP() - b.getRapportVP();
-        if (compa == 0.0f)
-            return 0;
-        else
-            return compa < 0 ? -1 : 1;
-    }
 }

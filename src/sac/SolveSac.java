@@ -10,13 +10,13 @@ import java.util.ArrayList;
 public interface SolveSac {
 
     /**
-     * @brief Méthode permettant de résoudre le problème du sac avec la solution choisie
+     * @brief Méthode permettant de résoudre le problème du sac
      */
     void resoudre();
 
     /**
      * @brief Getter
-     * @return Le sac de la solution choisie
+     * @return Le sac, solution du problème du sac
      */
     ArrayList<Objet> getSolution();
 }
