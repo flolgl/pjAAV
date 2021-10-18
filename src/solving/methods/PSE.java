@@ -26,28 +26,31 @@ public class PSE implements SolveSac {
      *
      * @param listeObjetsSac
      * @param poidsLimite
-     * @param tabObj
+     * @param objs
      * @param i
      */
-    public PSE(ArrayList<Objet> listeObjetsSac, float poidsLimite, Objet[] tabObj, int i){
+    public PSE(ArrayList<Objet> listeObjetsSac, float poidsLimite, ArrayList<Objet> objs, int i){
         if (i <= listeObjetsSac.size()) {
 
             this.valeur = new ArrayList<>();
-            this.valeur.addAll(Arrays.asList(tabObj));
+            this.valeur.addAll(objs);
 
             this.profondeur = i;
             this.calculBorneSuperieure(listeObjetsSac);
             this.calculBorneInferieure();
 
             if (i != listeObjetsSac.size()){
-                this.bas = new PSE(listeObjetsSac, poidsLimite, tabObj, i+1);
+                this.bas = new PSE(listeObjetsSac, poidsLimite, objs, i+1);
 
-                tabObj[i] = listeObjetsSac.get(i);
-                if (this.poidsListeObjets(tabObj)<=poidsLimite && this.borneSuperieure> PSE.borneInferieure){
+                objs.add(listeObjetsSac.get(i));
+                //tabObj[i] = listeObjetsSac.get(i);
+                if (PSE.getPoids(objs)<=poidsLimite && this.borneSuperieure> PSE.borneInferieure){
                     // vérification pour raccourcir l'arbre (les combinaisons sans intérêts ne sont pas créées)
-                    this.haut = new PSE(listeObjetsSac, poidsLimite, tabObj, i+1);
+                    this.haut = new PSE(listeObjetsSac, poidsLimite, objs, i+1);
                 }
-                tabObj[i] = null; // pour supprimer le dernier objet dans tabObj MAIS AUSSI dans this.value (car référence)
+                //tabObj[i] = null; // pour supprimer le dernier objet dans tabObj MAIS AUSSI dans this.value (car référence)
+                objs.remove(listeObjetsSac.get(i));
+
             }
 
         }
@@ -109,19 +112,6 @@ public class PSE implements SolveSac {
      *
      * @param listeObjetsSac
      */
-    public void calculBorneSuperieure(Objet[] listeObjetsSac){
-        float res = 0.0f;
-        res += PSE.getValeur(this.valeur); // valeur totale du noeud courant
-        for (int i=this.profondeur; i<listeObjetsSac.length; ++i){
-            res += listeObjetsSac[i].getValeur(); // ajout des valeurs des objets restants
-        }
-        this.borneSuperieure = res;
-    }
-
-    /**
-     *
-     * @param listeObjetsSac
-     */
     public void calculBorneSuperieure(ArrayList<Objet> listeObjetsSac){
         float res = 0.0f;
         res += PSE.getValeur(this.valeur); // valeur totale du noeud courant
@@ -172,16 +162,17 @@ public class PSE implements SolveSac {
         sac.Objet[] tabObj = new sac.Objet[sac.getTabObjets().size()];
         sac.Objet[] listeObj = sac.getTabObjets().toArray(new sac.Objet[0]);
 
-        solving.methods.PSE arbre = new solving.methods.PSE(sac.getTabObjets(), 3.0f, tabObj, 0);
+        solving.methods.PSE arbre = new solving.methods.PSE(sac.getTabObjets(), 3.0f, new ArrayList<Objet>(), 0);
 
-        arbre.chercherSolution();
+        arbre.resoudre();
 
+        dyna.resoudre();
         float f = 0, e = 0;
-        for(sac.Objet obj : dyna.getSac()) {
+        for(sac.Objet obj : dyna.getSolution()) {
             f += obj.getPoids();
             e += obj.getValeur();
         }
-        ArrayList<sac.Objet> tabSolution = arbre.getTabMeilleureValeur();
+        ArrayList<sac.Objet> tabSolution = arbre.getSolution();
 
         System.out.println("Dyna: " + f + " " + e);
 
@@ -191,5 +182,7 @@ public class PSE implements SolveSac {
     }
 
  */
+
+
 
 }
